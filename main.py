@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 # Настройки
 TOKEN = BOT_TOKEN
 WEBAPP_HOST = "0.0.0.0"
-WEBAPP_PORT = int(os.getenv("PORT", 8000))
-WEBHOOK_URL = os.getenv("WEBHOOK_URL", f"https://audio-bot-886e.onrender.com")  # Твой URL на Render
+WEBAPP_PORT = int(os.getenv("PORT"))  # Render сам даст порт
+WEBHOOK_URL = os.getenv("WEBHOOK_URL", "https://audio-bot-886e.onrender.com")  # Без пробелов!
 
 # Роутер для бота
 router = Router()
