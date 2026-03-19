@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Для Render
+WEBHOOK_URL = os.getenv("WEBHOOK_URL", "")
 BOT_TOKEN = os.getenv("BOT_TOKEN", "")
 BOT_API_URL = os.getenv("BOT_API_URL", None)
 MAX_FILE_SIZE_MB = int(os.getenv("MAX_FILE_SIZE_MB", "50"))
