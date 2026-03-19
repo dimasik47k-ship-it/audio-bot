@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+temp/*
+!.gitignore
+logs/
+*.log
+ffmpeg/
+*.exe
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
