@@ -2,7 +2,7 @@ import os
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher, types, Router  # 🔧 Добавили Router сюда!
 from aiogram.filters import Command
 from aiogram.types import Update
 from config import BOT_TOKEN, TEMP_DIR
@@ -40,29 +40,23 @@ async def cmd_help(message: types.Message):
 # Lifespan для правильного запуска/остановки
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Создаём папку temp
     Path(TEMP_DIR).mkdir(exist_ok=True)
     
-    # Инициализируем бота и диспетчер
     bot = Bot(token=TOKEN)
     dp = Dispatcher()
     
-    # Регистрируем хендлеры
     register_handlers(dp)
     dp.include_router(router)
     
-    # Устанавливаем webhook
     await bot.set_webhook(f"{WEBHOOK_URL}/bot", drop_pending_updates=True)
     logger.info(f"✅ Webhook установлен: {WEBHOOK_URL}/bot")
     
-    # Сохраняем в state
     app.state.bot = bot
     app.state.dp = dp
     
     logger.info("🤖 Бот запущен!")
     yield
     
-    # Очистка при остановке
     await bot.delete_webhook(drop_pending_updates=True)
     await bot.session.close()
     logger.info("🤖 Бот остановлен")
@@ -72,13 +66,11 @@ app = FastAPI(lifespan=lifespan)
 
 # ========== ЭНДПОИНТЫ ДЛЯ UPTIMEROBOT ==========
 
-# Корневой путь (поддерживает и GET, и HEAD)
 @app.get("/")
 @app.head("/")
 async def root():
     return {"status": "ok", "service": "AudioTool Bot"}
 
-# Health check (поддерживает и GET, и HEAD)
 @app.get("/health")
 @app.head("/health")
 async def health():
